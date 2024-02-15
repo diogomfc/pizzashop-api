@@ -3,6 +3,7 @@
     "elysia",
     "Elysia",
     "paralleldrive",
-    "postgres"
+    "postgres",
+    "postgresql"
   ]
 }
