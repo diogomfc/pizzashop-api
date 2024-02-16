@@ -1,26 +1,28 @@
-//Tabela de Restaurantes
-import { text, timestamp, pgTable, pgEnum } from "drizzle-orm/pg-core";
-import {createId } from '@paralleldrive/cuid2'
-import { users } from "./users";
-import { relations } from 'drizzle-orm';
+// Tabela de Restaurantes
+import { text, timestamp, pgTable } from 'drizzle-orm/pg-core'
+import { createId } from '@paralleldrive/cuid2'
+import { users } from './users'
+import { relations } from 'drizzle-orm'
 
-export const restaurants = pgTable("restaurants", {
-  id: text("id").$defaultFn(() => createId()).primaryKey(),
-  name: text("name").notNull(),
-  description: text("description").unique().notNull(),
-  managerId: text("manager_id").references(() => users.id, {
-    onDelete: "set null",
+export const restaurants = pgTable('restaurants', {
+  id: text('id')
+    .$defaultFn(() => createId())
+    .primaryKey(),
+  name: text('name').notNull(),
+  description: text('description').unique().notNull(),
+  managerId: text('manager_id').references(() => users.id, {
+    onDelete: 'set null',
   }),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})
 
-export const restaurantsRelations = relations(restaurants, ({one}) => {
-  return{
-    manager: one(users,{
-      fields:[restaurants.managerId],
-      references:[users.id],
+export const restaurantsRelations = relations(restaurants, ({ one }) => {
+  return {
+    manager: one(users, {
+      fields: [restaurants.managerId],
+      references: [users.id],
       relationName: 'restaurant_manager',
     }),
   }
-});
+})
